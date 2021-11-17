@@ -1,0 +1,38 @@
+name: Analyze OWASP Juice Shop with NG SAST
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  ngSast-Build:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: Download the ShiftLeft CLI and set permissions
+      run: |
+curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx ${GITHUB_WORKSPACE}/sl
+
+    - name: Set up Java JDK, Node.js
+      uses: actions/setup-java@v1.4.3
+      with:
+        java-version: 1.8
+        node-version: 16
+
+    - name: Repo prep for JS apps
+      run: |
+        npm install
+        rm -rf node_modules
+        rm -rf frontend/dist frontend/node_modules dist build
+
+    - name: Analyze app with NG SAST
+run: ${GITHUB_WORKSPACE}/sl analyze --force --app juice-shop-training --tag branch=${GITHUB_REF} --verbose --wait --js --cpg . -- --with-tests --include-configs --exclude node_modules,frontend/dist,frontend/node_modules,vagrant,dist,data/static,build
+      env:
+        SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
