@@ -1,14 +1,10 @@
 name: Analyze OWASP Juice Shop with NG SAST
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
@@ -20,7 +16,7 @@ jobs:
       run: |
 curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx ${GITHUB_WORKSPACE}/sl
 
-    - name: Set up Java JDK, Node.js
+    - name: Set up Java and Node
       uses: actions/setup-java@v1.4.3
       with:
         java-version: 1.8
