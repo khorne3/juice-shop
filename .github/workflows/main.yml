@@ -14,7 +14,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Download the ShiftLeft CLI and set permissions
       run: |
-curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx ${GITHUB_WORKSPACE}/sl
+        curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx ${GITHUB_WORKSPACE}/sl
 
     - name: Set up Java and Node
       uses: actions/setup-java@v1.4.3
@@ -29,6 +29,6 @@ curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx
         rm -rf frontend/dist frontend/node_modules dist build
 
     - name: Analyze app with NG SAST
-run: ${GITHUB_WORKSPACE}/sl analyze --force --app juice-shop-training --tag branch=${GITHUB_REF} --verbose --wait --js --cpg . -- --with-tests --include-configs --exclude node_modules,frontend/dist,frontend/node_modules,vagrant,dist,data/static,build
+      run: ${GITHUB_WORKSPACE}/sl analyze --force --app juice-shop-training --tag branch=${GITHUB_REF} --verbose --wait --js --cpg . -- --with-tests --include-configs --exclude node_modules,frontend/dist,frontend/node_modules,vagrant,dist,data/static,build
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
