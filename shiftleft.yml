@@ -1,0 +1,9 @@
+source:
+  branch: master
+build_rules:
+  - id: juice-shop-oss
+    finding_types: [oss_vuln]
+    threshold: 2
+    options:
+      reachable: true
+      num_findings: 10
